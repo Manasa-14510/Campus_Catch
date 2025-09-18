@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found - Community Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-search-location"></i>
+                <span>Lost & Found</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="#" class="nav-link" onclick="showPage('home')">Home</a>
+                <a href="#" class="nav-link" onclick="showPage('browse')">Browse Items</a>
+                <a href="#" class="nav-link" onclick="showPage('report')">Report Item</a>
+                <a href="#" class="nav-link" onclick="showPage('dashboard')">Dashboard</a>
+                <a href="#" class="nav-link" onclick="showPage('profile')">Profile</a>
+                <button class="btn btn-outline" onclick="logout()">Logout</button>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Auth Pages -->
+    <div id="auth-container" class="auth-container">
+        <!-- Login Page -->
+        <div id="login-page" class="auth-page active">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <i class="fas fa-search-location"></i>
+                    <h1>Welcome Back</h1>
+                    <p>Sign in to your Lost & Found account</p>
+                </div>
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+                </form>
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="#" onclick="showSignup()">Sign up</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signup Page -->
+        <div id="signup-page" class="auth-page">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <i class="fas fa-user-plus"></i>
+                    <h1>Create Account</h1>
+                    <p>Join our Lost & Found community</p>
+                </div>
+                <form id="signup-form" class="auth-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="signup-firstname">First Name</label>
+                            <input type="text" id="signup-firstname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-lastname">Last Name</label>
+                            <input type="text" id="signup-lastname" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-username">Username</label>
+                        <input type="text" id="signup-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="signup-dob">Date of Birth</label>
+                            <input type="date" id="signup-dob" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-gender">Gender</label>
+                            <select id="signup-gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                </form>
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="#" onclick="showLogin()">Sign in</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app-container" class="app-container" style="display: none;">
+        <!-- Home Page -->
+        <div id="home-page" class="page active">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h1>Lost Something? Found Something?</h1>
+                    <p>Connect with your community to reunite lost items with their owners</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" onclick="showPage('browse')">Browse Items</button>
+                        <button class="btn btn-outline" onclick="showPage('report')">Report Item</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                <div class="container">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i class="fas fa-search"></i>
+                            <h3 id="total-lost">0</h3>
+                            <p>Lost Items</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-hand-holding"></i>
+                            <h3 id="total-found">0</h3>
+                            <p>Found Items</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-check-circle"></i>
+                            <h3 id="total-claimed">0</h3>
+                            <p>Items Reunited</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Browse Items Page -->
+        <div id="browse-page" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h1>Browse Items</h1>
+                    <p>Find lost items or browse found items in your community</p>
+                </div>
+                
+                <div class="filters-section">
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-status="all" onclick="filterByStatus('all')">All Items</button>
+                        <button class="filter-tab" data-status="LOST" onclick="filterByStatus('LOST')">Lost</button>
+                        <button class="filter-tab" data-status="FOUND" onclick="filterByStatus('FOUND')">Found</button>
+                        <button class="filter-tab" data-status="CLAIMED" onclick="filterByStatus('CLAIMED')">Claimed</button>
+                    </div>
+                    
+                    <div class="search-filters">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search-input" placeholder="Search items..." onkeyup="searchItems()">
+                        </div>
+                        <select id="type-filter" onchange="filterItems()">
+                            <option value="">All Types</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Clothing">Clothing</option>
+                            <option value="Accessories">Accessories</option>
+                            <option value="Documents">Documents</option>
+                            <option value="Keys">Keys</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="items-grid" class="items-grid">
+                    <!-- Items will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Report Item Page -->
+        <div id="report-page" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h1>Report an Item</h1>
+                    <p>Help reunite lost items with their owners</p>
+                </div>
+                
+                <form id="report-form" class="report-form">
+                    <div class="form-section">
+                        <h3>Item Details</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="item-name">Item Name *</label>
+                                <input type="text" id="item-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="item-type">Item Type *</label>
+                                <select id="item-type" required>
+                                    <option value="">Select Type</option>
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Clothing">Clothing</option>
+                                    <option value="Accessories">Accessories</option>
+                                    <option value="Documents">Documents</option>
+                                    <option value="Keys">Keys</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="item-description">Description *</label>
+                            <textarea id="item-description" rows="4" placeholder="Provide detailed description..." required></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="item-location">Location *</label>
+                                <input type="text" id="item-location" placeholder="Where was it lost/found?" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="item-status">Status *</label>
+                                <select id="item-status" required>
+                                    <option value="">Select Status</option>
+                                    <option value="LOST">Lost</option>
+                                    <option value="FOUND">Found</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="item-image">Item Image</label>
+                            <input type="file" id="item-image" accept="image/*" onchange="handleImageUpload(event)">
+                            <div id="image-preview" class="image-preview"></div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Report Item</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h1>Dashboard</h1>
+                    <p id="dashboard-welcome">Welcome back!</p>
+                </div>
+                
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-search text-red"></i>
+                        <div class="stat-info">
+                            <h3 id="user-lost-count">0</h3>
+                            <p>Items You've Lost</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-hand-holding text-green"></i>
+                        <div class="stat-info">
+                            <h3 id="user-found-count">0</h3>
+                            <p>Items You've Found</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-check-circle text-blue"></i>
+                        <div class="stat-info">
+                            <h3 id="user-claimed-count">0</h3>
+                            <p>Items Claimed</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="recent-items">
+                    <h2>Recent Items</h2>
+                    <div id="recent-items-list" class="recent-items-list">
+                        <!-- Recent items will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div id="profile-page" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h1>Profile Settings</h1>
+                    <p>Manage your account information</p>
+                </div>
+                
+                <div class="profile-content">
+                    <div class="profile-avatar">
+                        <div class="avatar-container">
+                            <img id="profile-avatar" src="/placeholder.svg?height=120&width=120" alt="Profile">
+                            <button class="avatar-upload" onclick="document.getElementById('avatar-input').click()">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                            <input type="file" id="avatar-input" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
+                        </div>
+                    </div>
+                    
+                    <form id="profile-form" class="profile-form">
+                        <div class="form-section">
+                            <h3>Personal Information</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profile-firstname">First Name</label>
+                                    <input type="text" id="profile-firstname" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile-lastname">Last Name</label>
+                                    <input type="text" id="profile-lastname" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profile-username">Username</label>
+                                    <input type="text" id="profile-username" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile-email">Email</label>
+                                    <input type="email" id="profile-email" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profile-dob">Date of Birth</label>
+                                    <input type="date" id="profile-dob">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile-gender">Gender</label>
+                                    <select id="profile-gender">
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                    </form>
+                    
+                    <div class="form-section">
+                        <h3>Change Password</h3>
+                        <form id="password-form" class="password-form">
+                            <div class="form-group">
+                                <label for="current-password">Current Password</label>
+                                <input type="password" id="current-password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password">New Password</label>
+                                <input type="password" id="new-password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm-password">Confirm New Password</label>
+                                <input type="password" id="confirm-password" required>
+                            </div>
+                            <button type="submit" class="btn btn-outline">Change Password</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
